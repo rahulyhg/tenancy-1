@@ -16,6 +16,7 @@ references:
         - TENANCY_DB: testing
         - TENANCY_USERNAME: testing
         - TENANCY_PASSWORD: testing
+        - TENANCY_HOST: mysql
         - APP_KEY: deela5kinohw0haekoothahSh8eexach
 
 jobs:

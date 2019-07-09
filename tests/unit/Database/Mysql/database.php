@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 return [
     'driver'         => 'mysql',
-    'host'           => env('DB_HOST', '127.0.0.1'),
+    'host'           => env('TENANCY_HOST', '127.0.0.1'),
     'port'           => env('DB_PORT', '3306'),
     'database'       => env('TENANCY_DB', 'forge'),
     'username'       => env('TENANCY_USERNAME', 'forge'),
