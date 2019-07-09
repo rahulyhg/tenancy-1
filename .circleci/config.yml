@@ -1,4 +1,5 @@
 version: 2
+
 references:
     mysql_environment: &mysql_environment
         - MYSQL_DATABASE: testing
@@ -31,7 +32,7 @@ jobs:
                       - composer-7.2-{{ checksum "composer.json" }}
             - run: apt-get -yqq update
             - run: apt-get -yqq install git unzip zip libpq-dev mysql-client libpng-dev
-            - run: docker-php-ext-install pdo_pgsql pdo_mysql gd
+            - run: docker-php-ext-install pdo_mysql gd
             - run: curl -sS https://getcomposer.org/installer | php
             - run: chmod +x composer.phar
             - run: mv composer.phar /usr/local/bin/composer
@@ -41,6 +42,10 @@ jobs:
                   key: composer-7.2-{{ checksum "composer.json" }}
                   paths:
                       - vendor/
+            - run:
+                  name: Wait for other docker instances to be up
+                  command: sleep 10
+            - run: mysql --host=mysql -e "grant all privileges on *.* to 'testing'@'%' with grant option;"
             - run: ./vendor/bin/phpunit
             - persist_to_workspace:
                   root: ./
@@ -59,7 +64,7 @@ jobs:
                       - composer-7.3-{{ checksum "composer.json" }}
             - run: apt-get -yqq update
             - run: apt-get -yqq install git unzip zip libpq-dev mysql-client libpng-dev
-            - run: docker-php-ext-install pdo_pgsql pdo_mysql gd
+            - run: docker-php-ext-install pdo_mysql gd
             - run: curl -sS https://getcomposer.org/installer | php
             - run: chmod +x composer.phar
             - run: mv composer.phar /usr/local/bin/composer
@@ -69,6 +74,10 @@ jobs:
                   key: composer-7.3-{{ checksum "composer.json" }}
                   paths:
                       - vendor/
+            - run:
+                  name: Wait for other docker instances to be up
+                  command: sleep 10
+            - run: mysql --host=mysql -e "grant all privileges on *.* to 'testing'@'%' with grant option;"
             - run: ./vendor/bin/phpunit
 
     phpcs:
