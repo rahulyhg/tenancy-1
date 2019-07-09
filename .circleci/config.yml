@@ -17,7 +17,6 @@ references:
         - DB_USERNAME: testing
         - DB_PASSWORD: testing
         - DB_HOST: mysql
-        - DB_CONNECTION: mysql
         - APP_KEY: deela5kinohw0haekoothahSh8eexach
 
 jobs:
@@ -48,7 +47,8 @@ jobs:
                   name: Wait for other docker instances to be up
                   command: sleep 10
             - run: mysql --host=mysql -e "grant all privileges on *.* to 'testing'@'%' with grant option;"
-            - run: ./vendor/bin/phpunit
+            - run: DB_CONNECTION=sqlite ./vendor/bin/phpunit
+            - run: DB_CONNECTION=mysql ./vendor/bin/phpunit
             - persist_to_workspace:
                   root: ./
                   paths:
@@ -80,7 +80,8 @@ jobs:
                   name: Wait for other docker instances to be up
                   command: sleep 10
             - run: mysql --host=mysql -e "grant all privileges on *.* to 'testing'@'%' with grant option;"
-            - run: ./vendor/bin/phpunit
+            - run: DB_CONNECTION=sqlite ./vendor/bin/phpunit
+            - run: DB_CONNECTION=mysql ./vendor/bin/phpunit
 
     phpcs:
         docker:
