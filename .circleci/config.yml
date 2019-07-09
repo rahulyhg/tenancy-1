@@ -16,6 +16,8 @@ references:
         - DB_DATABASE: testing
         - DB_USERNAME: testing
         - DB_PASSWORD: testing
+        - DB_HOST: mysql
+        - DB_CONNECTION: mysql
         - APP_KEY: deela5kinohw0haekoothahSh8eexach
 
 jobs:
