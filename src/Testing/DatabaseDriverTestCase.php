@@ -55,7 +55,8 @@ abstract class DatabaseDriverTestCase extends TestCase
         return $this->db->connection(Tenancy::getTenantConnectionName());
     }
 
-    protected function getSystemConnection(){
+    protected function getSystemConnection()
+    {
         return $this->db->connection($this->tenant->getManagingSystemConnection());
     }
 
@@ -88,7 +89,7 @@ abstract class DatabaseDriverTestCase extends TestCase
 
         if (in_array(ManagesSystemConnection::class, class_implements($this->tenant))) {
             $system = $this->getSystemConnection();
-            $query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME =  ?";
+            $query = 'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME =  ?';
             $this->assertNotEmpty($system->select($query, [$this->tenant->getTenantIdentifier()]));
         }
 
