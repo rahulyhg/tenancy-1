@@ -55,6 +55,10 @@ abstract class DatabaseDriverTestCase extends TestCase
         return $this->db->connection(Tenancy::getTenantConnectionName());
     }
 
+    protected function getSystemConnection(){
+        return $this->db->connection($this->tenant->getManagingSystemConnection());
+    }
+
     protected function registerModel()
     {
         /** @var ResolvesTenants $resolver */
@@ -81,6 +85,12 @@ abstract class DatabaseDriverTestCase extends TestCase
     public function runs_create()
     {
         $this->events->dispatch(new Created($this->tenant));
+
+        if (in_array(ManagesSystemConnection::class, class_implements($this->tenant))) {
+            $system = $this->getSystemConnection();
+            $query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME =  ?";
+            $this->assertNotEmpty($system->select($query, [$this->tenant->getTenantIdentifier()]));
+        }
 
         $this->assertInstanceOf(
             PDO::class,
